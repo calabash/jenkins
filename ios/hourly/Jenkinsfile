@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 
-String cron_string = BRANCH_NAME == "develop" ? "H * * * *" : ""
+String cron_string = BRANCH_NAME == "master" ? "H * * * *" : ""
 
 pipeline {
   agent { label 'master' }
