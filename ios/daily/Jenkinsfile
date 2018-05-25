@@ -1,0 +1,68 @@
+#!/usr/bin/env groovy
+
+String cron_string = BRANCH_NAME == "master" ? "H H(1-3) * * *" : ""
+
+pipeline {
+  agent { label 'master' }
+  triggers { cron(cron_string) }
+
+  environment {
+    SLACK_COLOR_DANGER  = '#E01563'
+    SLACK_COLOR_INFO    = '#6ECADC'
+    SLACK_COLOR_WARNING = '#FFC300'
+    SLACK_COLOR_GOOD    = '#3EB991'
+    PROJECT_NAME = 'Jenkins: iOS Hourly Tasks'
+  }
+  options {
+    disableConcurrentBuilds()
+    timestamps()
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+  }
+  stages {
+    stage('announce') {
+      steps {
+        slackSend(color: "${env.SLACK_COLOR_INFO}",
+            message: "${env.PROJECT_NAME} [${env.GIT_BRANCH}] #${env.BUILD_NUMBER} *Started* (<${env.BUILD_URL}|Open>)")
+      }
+    }
+    stage('tasks') {
+      parallel {
+        stage('CoreSimulator') {
+          steps {
+            sh 'ios/daily/core-simulator.sh'
+          }
+        }
+        stage('Homebrew') {
+          steps {
+            sh 'ios/daily/homebrew.sh'
+          }
+        }
+        stage('Ruby') {
+          steps {
+            sh 'ios/daily/ruby.sh'
+          }
+        }
+      }
+    }
+  }
+  post {
+
+    aborted {
+      echo "Sending 'aborted' message to Slack"
+      slackSend (color: "${env.SLACK_COLOR_WARNING}",
+               message: "${env.PROJECT_NAME} [${env.GIT_BRANCH}] #${env.BUILD_NUMBER} *Aborted* after ${currentBuild.durationString.replace('and counting', '')}(<${env.BUILD_URL}|Open>)")
+    }
+
+    failure {
+      echo "Sending 'failed' message to Slack"
+      slackSend (color: "${env.SLACK_COLOR_DANGER}",
+               message: "${env.PROJECT_NAME} [${env.GIT_BRANCH}] #${env.BUILD_NUMBER} *Failed* after ${currentBuild.durationString.replace('and counting', '')}(<${env.BUILD_URL}|Open>)")
+    }
+
+    success {
+      echo "Sending 'success' message to Slack"
+      slackSend (color: "${env.SLACK_COLOR_GOOD}",
+               message: "${env.PROJECT_NAME} [${env.GIT_BRANCH}] #${env.BUILD_NUMBER} *Success* after ${currentBuild.durationString.replace('and counting', '')}(<${env.BUILD_URL}|Open>)")
+    }
+  }
+}
