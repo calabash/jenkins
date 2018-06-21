@@ -17,6 +17,7 @@ pipeline {
     disableConcurrentBuilds()
     timestamps()
     buildDiscarder(logRotator(numToKeepStr: '10'))
+    timeout(time: 90, unit: 'MINUTES')
   }
   stages {
     stage('announce') {
