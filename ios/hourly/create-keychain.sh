@@ -5,7 +5,9 @@ trap 'rm -rf calabash-codesign' EXIT
 set -e
 
 rm -rf calabash-codesign
-git clone --recursive git@github.com:calabash/calabash-codesign.git
+
+TOKEN=$(security find-internet-password -l calabash-ci -w)
+git clone --recursive https://calabash-ci:${TOKEN}@github.com/xamarinhq/calabash-codesign.git
 
 (
 cd calabash-codesign
