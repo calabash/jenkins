@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+trap 'gem install run_loop' EXIT
+
+set -e
+
 rm -rf /Users/jenkins/Library/Logs/CoreSimulator
 mkdir -p /Users/jenkins/Library/Logs/CoreSimulator
 
