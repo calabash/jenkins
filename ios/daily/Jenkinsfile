@@ -17,7 +17,7 @@ pipeline {
     disableConcurrentBuilds()
     timestamps()
     buildDiscarder(logRotator(numToKeepStr: '10'))
-    timeout(time: 90, unit: 'MINUTES')
+    timeout(time: 3, unit: 'HOURS')
   }
   stages {
     stage('announce') {
@@ -30,7 +30,7 @@ pipeline {
       parallel {
         stage('CoreSimulator') {
           steps {
-            sh 'ios/daily/core-simulator.sh'
+            sh 'gtimeout --foreground --signal SIGKILL 3h ios/daily/core-simulator.sh'
           }
         }
         stage('Homebrew') {

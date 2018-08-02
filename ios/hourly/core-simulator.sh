@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-trap 'gem install run_loop' EXIT
+trap 'gem install run_loop' ERR
 
 set -e
 
