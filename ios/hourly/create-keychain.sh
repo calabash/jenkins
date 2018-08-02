@@ -6,7 +6,7 @@ set -e
 
 rm -rf calabash-codesign
 
-TOKEN=$(security find-internet-password -l calabash-ci -w)
+TOKEN=$(security find-generic-password -l calabash-ci -w)
 git clone --recursive https://calabash-ci:${TOKEN}@github.com/xamarinhq/calabash-codesign.git
 
 (
