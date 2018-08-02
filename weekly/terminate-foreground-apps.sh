@@ -10,8 +10,8 @@ do
 
   if [ "$app" = "Finder" ]; then
     echo "Will not quit Finder"
-  elif [ "$app" = "Terminal" ]; then
-    echo "Will not quit Terminal"
+  elif [ "$app" = "java" ]; then
+    echo "Will not quit java"
   else
     echo "Will quit $app"
     killall -KILL $app
