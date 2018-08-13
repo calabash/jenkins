@@ -14,7 +14,6 @@ git clone git@github.com:calabash/run_loop.git
 
 developer_dirs=(
 "/Xcode/9.4.1/Xcode.app/Contents/Developer"
-"/Xcode/10.0/Xcode-beta.app/Contents/Developer"
 )
 
 for directory in ${developer_dirs[@]}; do
