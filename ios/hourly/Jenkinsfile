@@ -33,9 +33,14 @@ pipeline {
             sh 'ios/hourly/create-keychain.sh'
           }
         }
-        stage('CoreSimulator') {
+        stage('CoreSimulator: manage processes') {
           steps {
             sh 'ios/hourly/core-simulator.sh'
+          }
+        }
+        stage('CoreSimulator: delete stale simulators') {
+          steps {
+            sh 'ios/hourly/delete-stale-simulators.rb'
           }
         }
       }
