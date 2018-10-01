@@ -12,5 +12,5 @@ rm -rf run_loop
 git clone git@github.com:calabash/run_loop.git
 (cd run_loop; rake install)
 
-exec DEVELOPER_DIR="/Xcode/9.4.1/Xcode.app/Contents/Developer" \
-  run-loop simctl doctor --debug
+export DEVELOPER_DIR="/Xcode/9.4.1/Xcode.app/Contents/Developer"
+exec run-loop simctl doctor --debug
