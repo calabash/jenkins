@@ -9,4 +9,4 @@ rm -rf run_loop
 git clone git@github.com:calabash/run_loop.git
 (cd run_loop; rake install)
 
-DEBUG=1 run-loop simctl manage-processes
+exec DEBUG=1 run-loop simctl manage-processes
