@@ -4,4 +4,4 @@ set -e
 
 brew update
 brew upgrade
-brew cleanup --force
+brew cleanup -s
